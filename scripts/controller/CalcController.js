@@ -2,32 +2,45 @@ class CalcController{
 
     constructor(){
         
+        this._operation = [];
         this._locale = "pt-BR";
         this._displayCalcEl = document.querySelector("#display");
         this._dateEl = document.querySelector("#date");
         this._timeEl = document.querySelector("#time");
+        this._currentDate;
         this.initialize();
         this.initButtonsEvents();
-
-        this._currentDate;
     
     }
 
 
     initialize(){
 
-        let interval = setInterval(()=>{
+        this.setDisplayDateTime()
 
-            this.setDisplayDateTime();
+        setInterval(()=>{
+            this.setDisplayDateTime()    
+            
 
         },1000);
- 
-        setTimeout(()=>{
+        
+        // Para a aplicação
+        // setTimeout(()=>{
 
-            clearInterval(interval);
+        //     clearInterval(interval);
 
-        }, 1000);
+        // }, 1000);
 
+    }
+
+    setDisplayDateTime(){
+        
+        this.displayDate =  this.currentDate.toLocaleDateString(this._locale,{
+            day:"2-digit",
+            month: "long",
+            year: "numeric"
+        });
+        this.displayTime =  this.currentDate.toLocaleTimeString(this._locale);
     }
 
     addEventListnerAll(element, events, fn){
@@ -38,6 +51,66 @@ class CalcController{
             
 
         });
+    }
+
+    clearEntry(){
+        this._operation.pop();
+
+    }
+
+    clearAll(){
+        this._operation = [];
+
+    }
+
+    setError(){
+
+        this.displayCalc = "Error";
+    }
+
+    addOperation(value){
+
+        this._operation.push()
+    }
+
+    execBtn(value){
+
+        switch(value){
+            case 'ac':
+                
+                this.clearAll();
+                break;
+
+            case 'ec':
+
+                this.clearEntry();
+                break;
+
+            case 'soma':
+                break;
+            
+            case 'subtracao':
+                break;
+            
+            case 'divisao':
+                 break;
+            
+            case 'multiplicacao':
+                break;
+        
+            case 'porcento':
+                break;
+        
+            case 'igual':
+                break;
+            
+            default:
+
+                this.setError();
+                break;
+        
+
+        }
     }
 
     initButtonsEvents(){
@@ -61,15 +134,15 @@ class CalcController{
     }
 
 
-    setDisplayDateTime(){
+    // setDisplayDateTime(){
 
-        this.displayDate = this.currentDate.toLocaleDateString(this._locale,{
-            day: "2-digit",
+    //     this.displayDate = this.currentDate.toLocaleDateString(this._locale,{
+    //         day: "2-digit",
             
-            year:"numeric"
-        });
-        this.displayTime = this.currentDate.toLocaleDateString(this._locale);
-    }
+    //         year:"numeric"
+    //     });
+    //     this.displayTime = this.currentDate.toLocaleDateString(this._locale);
+    // }
 
     get displayCalc(){
 
@@ -89,7 +162,7 @@ class CalcController{
 
     set displayTime(value){
 
-        this._timeEl.innerHTML = value;
+        return this._timeEl.innerHTML = value;
 
     }
 
@@ -100,7 +173,7 @@ class CalcController{
 
     set displayDate(value){
 
-        this._dateEl.innerHTML = value;
+        return this._dateEl.innerHTML = value;
 
     }
     
