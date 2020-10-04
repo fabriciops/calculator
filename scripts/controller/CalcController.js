@@ -33,6 +33,12 @@ class CalcController{
 
     }
 
+    getLastOperation(){
+
+        return this._operation[this._operation.length-1];
+
+    }
+
     setDisplayDateTime(){
         
         this.displayDate =  this.currentDate.toLocaleDateString(this._locale,{
@@ -68,9 +74,46 @@ class CalcController{
         this.displayCalc = "Error";
     }
 
+    setLastOperation(value){
+
+        this._operation[this._operation.length-1] = value;
+
+    }
+
+    isOperator(value){
+
+        //indexOf -> busca o valor dentro do array, se não estiver ele trás -1
+        return(['+', '-', '*', '%', '/'].indexOf(value) > -1);
+
+    }
+
     addOperation(value){
 
-        this._operation.push()
+        //Antes de eu fazer algo com value, o último elemento no array é um número?
+
+        if(isNaN(this.getLastOperation())){
+            
+            if(this.isOperator(value)){
+                this.setLastOperation(value);
+            
+            } else if(isNaN(value)){
+
+                console.log(value)
+
+            } else{
+
+                this._operation.push(value);
+
+            }
+        }
+        else{
+
+            newValue = this.getLastOperation().toString() + value.toString();
+            this.setLastOperation(value);
+        }
+
+
+        console.log(this._operation)
     }
 
     execBtn(value){
@@ -87,29 +130,48 @@ class CalcController{
                 break;
 
             case 'soma':
+                this.addOperation("+")
                 break;
             
             case 'subtracao':
+                this.addOperation("-")
                 break;
             
             case 'divisao':
-                 break;
+                this.addOperation("/")
+                break;
             
             case 'multiplicacao':
+                this.addOperation("*")
                 break;
         
             case 'porcento':
+                this.addOperation("%")
                 break;
         
             case 'igual':
+                // this.addOperation("/")
+                break;
+
+            case 'ponto':
+                this.addOperation(".")
                 break;
             
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                this.addOperation(parseInt(value));
+                break;
             default:
 
                 this.setError();
                 break;
-        
-
         }
     }
 
